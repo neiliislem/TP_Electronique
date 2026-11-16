@@ -8,14 +8,14 @@ The goal is inverse antenna design: from target radiation specifications **s = [
 
 ```mermaid
 flowchart LR
-    S["Specifications (N,4)"] --> P["1. Preprocessing & encoding<br/>s_t = (s-min)/(max-min)+1e-8"]
-    P -->|s_t, t, ω| C["2. Antenna Coherence Network f_θ<br/>FiLM guidance + skip connections"]
-    C -->|ŷ_0 (N,5)| L["3. LCM Scheduler<br/>1–4 steps"]
-    L -->|"+ noise ε → y''_t"| C
-    L --> PO["4. Post-processing<br/>denormalize + round + clip"]
-    PO --> A["Predicted architecture (N,5)"]
-    D["Normalized count data"] --> T["5. Teacher & PF-ODE solver<br/>y_(t+Δt) → y_t"]
-    T --> E["6. EMA target + consistency loss<br/>stop-gradient, minimize L_cons"]
+    S["Specifications s - N x 4"] --> P["1. Preprocessing and encoding<br/>s_t = (s-min)/(max-min)+1e-8"]
+    P -->|"s_t, t, omega"| C["2. Antenna Coherence Network f_theta<br/>FiLM guidance and skip connections"]
+    C -->|"y0_hat - N x 5"| L["3. LCM Scheduler<br/>1 to 4 steps"]
+    L -->|"plus noise eps - re-noised input"| C
+    L --> PO["4. Post-processing<br/>denormalize, round, clip"]
+    PO --> A["Predicted architecture - N x 5"]
+    D["Normalized count data"] --> T["5. Teacher and PF-ODE solver<br/>y at t+dt to y at t"]
+    T --> E["6. EMA target and consistency loss<br/>stop-gradient, minimize L_cons"]
     E -.-> C
 ```
 
