@@ -56,7 +56,9 @@ class LCMConfig:
     def load(cls, name: str = "lcm_config.json") -> "LCMConfig":
         path = Path(__file__).resolve().parent / name
         with open(path, "r", encoding="utf-8") as handle:
-            return cls(**json.load(handle))
+            data = json.load(handle)
+        data["work_dir"] = str(Path(__file__).resolve().parent)
+        return cls(**data)
 
     def resolve_device(self):
         import torch
